@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מה יש באזור?</title>
+<meta name="theme-color" content="#F7F4EE">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0B7A8C;--sun:#FF8A3D;--navy:#0F2A3D;--bg:#F7F4EE;--green:#2E9E6B;--card:#fff;--line:#E4DFD3;--mute:#5E6E7A}
+*{box-sizing:border-box;margin:0}
+html,body{background:var(--bg);color:var(--navy);font-family:Heebo,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+.hero{position:relative;overflow:hidden;padding:calc(28px + env(safe-area-inset-top,0px)) 0 26px}
+.sun{position:absolute;top:-70px;left:-60px;width:230px;height:230px;border-radius:50%;background:var(--sun);opacity:.95}
+.road{position:absolute;top:60px;left:-20px;width:200px;opacity:.9}
+.hero .wrap{position:relative}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--teal);margin-bottom:34px}
+h1{font-size:2.4rem;line-height:1.05;font-weight:800;letter-spacing:-.02em;max-width:11ch}
+.sub{margin-top:10px;color:var(--mute);max-width:30ch}
+.search{display:flex;gap:8px;margin-top:22px;background:#fff;border:2px solid var(--navy);border-radius:16px;padding:6px 6px 6px 14px}
+.search input{flex:1;border:0;background:none;padding:10px 6px;min-width:0}
+.search input:focus{outline:none}
+.search:focus-within{border-color:var(--teal)}
+.go{background:var(--teal);color:#fff;border:0;border-radius:11px;padding:0 18px;font-weight:700;cursor:pointer}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 6px}
+.cat{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;font-size:.8rem;font-weight:500;padding:4px 0}
+.cat i{font-style:normal;font-size:1.5rem;width:54px;height:54px;display:grid;place-items:center;border-radius:18px;background:#fff;border:2px solid var(--line);transition:transform .15s}
+.cat[aria-pressed=true] i{background:var(--teal);border-color:var(--teal);transform:scale(1.06)}
+.cat[aria-pressed=true]{color:var(--teal);font-weight:700}
+.head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px}
+.head h2{font-size:1.15rem;font-weight:700}
+.head span{color:var(--mute);font-size:.85rem}
+.list{display:grid;gap:10px}
+.place{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px}
+.ico{flex:none;width:56px;height:56px;border-radius:15px;background:var(--bg);display:grid;place-items:center;font-size:1.6rem}
+.place b{display:block;font-weight:700}
+.place small{color:var(--mute)}
+.tag{display:inline-block;margin-top:4px;font-size:.72rem;background:#FFF1E6;color:#9A4A12;border-radius:8px;padding:2px 8px}
+.fav{margin-inline-start:auto;flex:none;width:44px;height:44px;border-radius:50%;border:0;background:none;font-size:1.4rem;cursor:pointer;color:var(--mute)}
+.fav[aria-pressed=true]{color:var(--sun)}
+.empty{text-align:center;padding:36px 12px;color:var(--mute)}
+.empty svg{width:84px;height:84px;margin-bottom:10px}
+.empty b{display:block;color:var(--navy);font-size:1.05rem;margin-bottom:4px}
+.note{margin-top:22px;font-size:.78rem;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
+nav{position:fixed;inset:auto 0 0 0;background:rgba(247,244,238,.96);border-top:1px solid var(--line);display:flex;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(8px)}
+nav button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;font-size:.75rem;color:var(--mute);cursor:pointer;border-radius:12px}
+nav button span{font-size:1.3rem}
+nav button[aria-current=page]{color:var(--teal);font-weight:700}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="sun" aria-hidden="true"></div>
+  <svg class="road" viewBox="0 0 200 60" fill="none" aria-hidden="true"><path d="M0 40 C50 10 90 70 200 20" stroke="#fff" stroke-width="10" stroke-linecap="round"/></svg>
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="32" viewBox="0 0 26 32" aria-hidden="true"><path d="M13 0C5.8 0 0 5.6 0 12.6 0 21 13 32 13 32s13-11 13-19.4C26 5.6 20.2 0 13 0z" fill="#0B7A8C"/><circle cx="13" cy="12" r="5" fill="#FF8A3D"/></svg>
+      מה יש באזור?
+    </div>
+    <h1>מה יש סביבך עכשיו</h1>
+    <p class="sub">אוכל, בתי כנסת, טיולים ובילויים. בכל יישוב בישראל.</p>
+    <form class="search" id="form" role="search">
+      <input id="q" type="search" placeholder="עיר, יישוב או מה לחפש" aria-label="חיפוש" autocomplete="off">
+      <button class="go" type="submit">חפש</button>
+    </form>
+  </div>
+</header>
+
+<main class="wrap" id="home">
+  <div class="cats" id="cats" role="group" aria-label="קטגוריות"></div>
+  <div class="head"><h2 id="title">מקומות</h2><span id="count"></span></div>
+  <div class="list" id="list"></div>
+  <p class="note">הנתונים באפליקציה הם דוגמאות להמחשה בלבד, ולא מקומות אמיתיים. מידע על כשרות לא מוצג עד שיהיה מקור אמין לאימות.</p>
+</main>
+
+<main class="wrap" id="favs" hidden>
+  <div class="head"><h2>המועדפים שלי</h2><span id="fcount"></span></div>
+  <div class="list" id="flist"></div>
+</main>
+
+<main class="wrap" id="map" hidden>
+  <div class="empty" style="padding-top:60px">
+    <svg viewBox="0 0 84 84" fill="none" aria-hidden="true"><circle cx="42" cy="42" r="38" fill="#fff" stroke="#E4DFD3" stroke-width="3"/><path d="M42 18c-8 0-14 6-14 14 0 11 14 26 14 26s14-15 14-26c0-8-6-14-14-14z" fill="#0B7A8C"/><circle cx="42" cy="32" r="6" fill="#FF8A3D"/></svg>
+    <b>המפה תגיע בשלב הבא</b>
+    בחירת ספק המפות תלויה בעלויות ובאישור שלך.
+  </div>
+</main>
+
+<nav aria-label="ניווט ראשי">
+  <button data-tab="home" aria-current="page"><span>🧭</span>גילוי</button>
+  <button data-tab="map"><span>🗺️</span>מפה</button>
+  <button data-tab="favs"><span>♥</span>מועדפים</button>
+</nav>
+
+<script>
+// נתוני דוגמה בלבד. בהמשך יוחלפו בנתונים אמיתיים ממאגר.
+const CATS=[
+ {id:'food',label:'אוכל',ico:'🍽️'},{id:'coffee',label:'קפה',ico:'☕'},
+ {id:'synagogue',label:'בתי כנסת',ico:'🕍'},{id:'trail',label:'טיולים',ico:'⛰️'},
+ {id:'beach',label:'חופים',ico:'🌊'},{id:'park',label:'פארקים',ico:'🌳'},
+ {id:'kids',label:'ילדים',ico:'🎈'},{id:'events',label:'אירועים',ico:'🎟️'}
+];
+const PLACES=[
+ {id:1,name:'מסעדה לדוגמה א׳',cat:'food',city:'פתח תקווה'},
+ {id:2,name:'מסעדה לדוגמה ב׳',cat:'food',city:'ירושלים'},
+ {id:3,name:'בית קפה לדוגמה',cat:'coffee',city:'תל אביב'},
+ {id:4,name:'בית כנסת לדוגמה',cat:'synagogue',city:'פתח תקווה'},
+ {id:5,name:'בית כנסת לדוגמה ב׳',cat:'synagogue',city:'חיפה'},
+ {id:6,name:'מסלול הליכה לדוגמה',cat:'trail',city:'צפון'},
+ {id:7,name:'חוף לדוגמה',cat:'beach',city:'נתניה'},
+ {id:8,name:'פארק לדוגמה',cat:'park',city:'ראשון לציון'},
+ {id:9,name:'מתחם משחקים לדוגמה',cat:'kids',city:'באר שבע'},
+ {id:10,name:'הופעה לדוגמה',cat:'events',city:'תל אביב'}
+];
+const $=s=>document.querySelector(s), byCat=id=>CATS.find(c=>c.id===id);
+let cat=null, text='', favs=[];
+try{favs=JSON.parse(localStorage.getItem('favs')||'[]')}catch(e){}
+const save=()=>{try{localStorage.setItem('favs',JSON.stringify(favs))}catch(e){}};
+
+function card(p){
+ const c=byCat(p.cat), on=favs.includes(p.id);
+ return `<article class="place"><div class="ico" aria-hidden="true">${c.ico}</div>
+ <div><b>${p.name}</b><small>${p.city}</small><br><span class="tag">דוגמה</span></div>
+ <button class="fav" data-id="${p.id}" aria-pressed="${on}" aria-label="${on?'הסר מהמועדפים':'שמור במועדפים'}">${on?'♥':'♡'}</button></article>`;
+}
+function emptyBlock(t,s){return `<div class="empty"><svg viewBox="0 0 84 84" fill="none" aria-hidden="true"><circle cx="38" cy="38" r="22" stroke="#0B7A8C" stroke-width="6"/><path d="M54 54l16 16" stroke="#0B7A8C" stroke-width="6" stroke-linecap="round"/><circle cx="38" cy="38" r="8" fill="#FF8A3D"/></svg><b>${t}</b>${s}</div>`}
+function render(){
+ const q=text.trim();
+ const res=PLACES.filter(p=>(!cat||p.cat===cat)&&(!q||(p.name+p.city+byCat(p.cat).label).includes(q)));
+ $('#title').textContent=cat?byCat(cat).label:'מקומות';
+ $('#count').textContent=res.length+' תוצאות';
+ $('#list').innerHTML=res.length?res.map(card).join(''):emptyBlock('לא מצאנו תוצאות','נסה עיר אחרת או קטגוריה אחרת.');
+ const f=PLACES.filter(p=>favs.includes(p.id));
+ $('#fcount').textContent=f.length?f.length+' מקומות':'';
+ $('#flist').innerHTML=f.length?f.map(card).join(''):emptyBlock('עדיין אין מועדפים','לחץ על הלב ליד מקום כדי לשמור אותו כאן.');
+}
+$('#cats').innerHTML=CATS.map(c=>`<button class="cat" data-c="${c.id}" aria-pressed="false"><i>${c.ico}</i>${c.label}</button>`).join('');
+$('#cats').addEventListener('click',e=>{
+ const b=e.target.closest('.cat'); if(!b) return;
+ cat=cat===b.dataset.c?null:b.dataset.c;
+ document.querySelectorAll('.cat').forEach(x=>x.setAttribute('aria-pressed',x.dataset.c===cat));
+ render();
+});
+$('#form').addEventListener('submit',e=>{e.preventDefault();text=$('#q').value;render();$('#list').scrollIntoView({behavior:'smooth',block:'start'})});
+$('#q').addEventListener('input',e=>{text=e.target.value;render()});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('.fav'); if(!b) return;
+ const id=+b.dataset.id; favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id]; save(); render();
+});
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.removeAttribute('aria-current'));
+ b.setAttribute('aria-current','page');
+ ['home','favs','map'].forEach(t=>$('#'+t).hidden=t!==b.dataset.tab);
+ scrollTo(0,0);
+}));
+render();
+</script>
+</body>
+</html>
