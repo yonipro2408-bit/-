@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מה יש באזור?</title>
+<meta name="theme-color" content="#0A3A46">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14212B;--teal:#0B7A8C;--hero:#0A3A46;--sun:#FF8A3D;--bg:#F6F6F2;--line:#E4E4DD;--mute:#68757F}
+*{box-sizing:border-box;margin:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+body{padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+[hidden]{display:none!important}
+.ic{flex:none;display:block}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+#splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#fff;background:linear-gradient(170deg,#0B5566,#072C36)}
+.tile{width:104px;height:104px;border-radius:26px;background:var(--bg);display:grid;place-items:center;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.tile img{width:60%}
+#splash h1{font-size:2.3rem;font-weight:800;margin-top:26px;letter-spacing:-.01em}
+#splash p{opacity:.8;margin:8px 0 34px}
+.btn{background:#fff;color:var(--hero);border:0;border-radius:12px;padding:15px 44px;font-weight:700;font-size:1rem;cursor:pointer}
+.hero{background:var(--hero);color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 0 30px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:380px;height:380px;inset-inline-start:-90px;top:-40px;background:var(--logo) center/contain no-repeat;opacity:.07;filter:brightness(0) invert(1)}
+.hero .wrap{position:relative;z-index:1}
+.bar{display:flex;align-items:center;gap:10px}
+.bar .tile{width:34px;height:34px;border-radius:9px;box-shadow:none}
+.bar b{font-weight:700;letter-spacing:.01em}
+.pill{margin-inline-start:auto;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:8px 12px;font-size:.85rem;cursor:pointer;max-width:55%;white-space:nowrap}
+.pill span{overflow:hidden;text-overflow:ellipsis}
+.hero h1{font-size:2rem;font-weight:800;line-height:1.15;margin:28px 0 6px;letter-spacing:-.015em}
+.hero p.s{opacity:.75;margin-bottom:18px}
+.sbox{position:relative;max-width:720px}
+.search{display:flex;align-items:center;background:#fff;border-radius:14px;padding:5px 16px 5px 5px;box-shadow:0 10px 30px rgba(0,0,0,.25);color:var(--mute)}
+.search input{flex:1;border:0;background:none;padding:14px 12px;min-width:0;color:var(--ink);font-size:1.02rem}
+.search input:focus{outline:none}
+.go{background:var(--teal);color:#fff;border:0;border-radius:10px;padding:12px 24px;font-weight:700;cursor:pointer}
+#sug{position:absolute;inset-inline:0;top:calc(100% + 6px);background:#fff;border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.25);z-index:30;overflow:hidden}
+#sug button{display:flex;align-items:center;gap:8px;width:100%;text-align:start;background:none;border:0;padding:12px 16px;cursor:pointer;color:var(--ink);border-bottom:1px solid var(--line)}
+#sug button:last-child{border:0}
+#sug button:hover{background:var(--bg)}
+.row{display:flex;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 28px),transparent)}
+.row::-webkit-scrollbar{display:none}
+.chips{gap:8px;margin-top:16px}
+.chip{flex:none;background:none;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 13px;font-size:.84rem;cursor:pointer}
+.chip.on{background:#fff;color:var(--hero);font-weight:700;border-color:#fff}
+.catbar{position:sticky;top:0;z-index:15;background:#fff;border-bottom:1px solid var(--line)}
+.catbar .row{padding:0 max(12px,calc((100vw - 1040px)/2 + 12px))}
+.cb{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 15px 9px;border:0;border-bottom:2.5px solid transparent;background:none;color:var(--mute);font-size:.78rem;font-weight:500;cursor:pointer}
+.cb:hover{color:var(--ink)}
+.cb[aria-pressed=true]{color:var(--teal);border-bottom-color:var(--teal);font-weight:700}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px}
+.seg{display:flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;padding:6px 13px;border-radius:7px;font-size:.82rem;cursor:pointer;color:var(--mute)}
+.seg button.on{background:var(--ink);color:#fff}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 12px}
+.sec h2{font-size:1.2rem;font-weight:800;letter-spacing:-.01em}
+.sec span{color:var(--mute);font-size:.84rem}
+.list{display:grid;gap:12px;grid-template-columns:1fr}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:start;transition:box-shadow .15s,border-color .15s}
+.card:hover{border-color:#cfd3cc;box-shadow:0 8px 22px rgba(20,33,43,.07)}
+.mono{width:46px;height:46px;border-radius:12px;background:#E9F2F3;color:var(--teal);display:grid;place-items:center}
+.card b{font-weight:700;font-size:1rem;line-height:1.3;display:block}
+.meta{color:var(--mute);font-size:.84rem;margin-top:3px}
+.addr{color:var(--mute);font-size:.8rem;margin-top:2px}
+.kb{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;margin-top:8px;font-weight:600}
+.kb::before{content:"";width:7px;height:7px;border-radius:50%;background:#2E9E6B}
+.kb.no::before{background:#D2583B}.kb.u{font-weight:400;color:var(--mute)}.kb.u::before{background:#B9C0C5}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.acts a{font-size:.8rem;font-weight:600;text-decoration:none;border-radius:8px;padding:7px 13px;border:1px solid var(--line);color:var(--ink)}
+.acts a.p{background:var(--ink);border-color:var(--ink);color:#fff}
+.fav{width:38px;height:38px;border:0;background:none;cursor:pointer;color:#A8B1B8;border-radius:50%;display:grid;place-items:center}
+.fav:hover{background:var(--bg)}
+.fav[aria-pressed=true]{color:var(--sun)}
+.fav[aria-pressed=true] svg{fill:currentColor}
+.sk{height:118px;border-radius:14px;background:linear-gradient(90deg,#ECECE6 25%,#F5F5F1 50%,#ECECE6 75%);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.st{display:flex;align-items:center;gap:10px;color:var(--mute);grid-column:1/-1}
+.sp{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--line);border-top-color:var(--teal);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cc{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;font-weight:700;font-size:1rem;cursor:pointer;text-align:start}
+.cc:hover{border-color:var(--teal);color:var(--teal)}
+.empty{text-align:center;padding:40px 14px;color:var(--mute);line-height:1.6;grid-column:1/-1}
+.empty b{display:block;color:var(--ink);font-size:1.05rem;margin-bottom:4px}
+.empty button,.more{margin:14px auto 0;display:block;background:var(--ink);color:#fff;border:0;border-radius:10px;padding:11px 24px;cursor:pointer;font-weight:600}
+.more{grid-column:1/-1;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.note{margin:24px 0;font-size:.76rem;color:var(--mute);line-height:1.6}
+.note a{color:var(--teal)}
+iframe{width:100%;height:62vh;border:0;border-radius:14px;margin-top:14px}
+nav{position:fixed;inset:auto 0 0 0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);display:flex;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(10px);z-index:20}
+nav button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;font-size:.72rem;color:var(--mute);cursor:pointer}
+nav button[aria-current=page]{color:var(--teal);font-weight:700}
+.top2{padding:calc(24px + env(safe-area-inset-top,0px)) 0 0}
+.top2 h1{font-size:1.5rem;font-weight:800}
+#guide{position:fixed;inset:0;z-index:55;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
+.gbox{width:100%;max-width:440px;text-align:center}
+.gk{font-size:.82rem;font-weight:700;color:var(--teal);letter-spacing:.02em;margin-bottom:16px}
+.gmock{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 16px;min-height:178px;display:flex;flex-direction:column;justify-content:center;gap:12px;pointer-events:none;box-shadow:0 14px 34px rgba(20,33,43,.08);text-align:start}
+.gmock .search{box-shadow:none;border:1px solid var(--line)}
+.gmock .go{padding:10px 18px}
+.gmock .row{mask-image:none;-webkit-mask-image:none;overflow:hidden;justify-content:center}
+.gmock .chip{color:var(--ink);border-color:var(--line)}
+.gmock .chip.on{background:var(--hero);color:#fff;border-color:var(--hero)}
+#guide h2{font-size:1.4rem;font-weight:800;margin:22px 0 6px}
+#guide p#gd{color:var(--mute);line-height:1.6;min-height:3.2em}
+.dots{display:flex;justify-content:center;gap:7px;margin:18px 0}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--teal);width:20px;border-radius:4px}
+.btn.dark{background:var(--ink);color:#fff;width:100%}
+.skip{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));inset-inline-end:18px;background:none;border:0;color:var(--mute);cursor:pointer;font-size:.9rem}
+.link{background:none;border:0;color:var(--teal);cursor:pointer;font-size:.76rem;text-decoration:underline;padding:0}
+@media(min-width:820px){.hero h1{font-size:2.8rem;margin-top:44px}.list{grid-template-columns:1fr 1fr}.hero{padding-bottom:44px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<section id="splash">
+ <div class="tile"><img data-img="logo" alt=""></div>
+ <h1>מה יש באזור?</h1>
+ <p>מסעדות, בתי כנסת, טיולים ועוד. בכל יישוב בישראל.</p>
+ <button class="btn" id="start">בוא נתחיל</button>
+</section>
+
+<section id="guide" hidden role="dialog" aria-modal="true" aria-label="מדריך שימוש">
+ <button class="skip" id="gskip">דלג</button>
+ <div class="gbox">
+  <p class="gk">מדריך קצר: איך משתמשים באפליקציה</p>
+  <div class="gmock" id="gmock"></div>
+  <h2 id="gt"></h2><p id="gd"></p>
+  <div class="dots" id="gdots"></div>
+  <button class="btn dark" id="gnext">הבא</button>
+ </div>
+</section>
+
+<div id="home">
+ <header class="hero"><div class="wrap">
+  <div class="bar"><div class="tile"><img data-img="logo" alt=""></div><b>מה יש באזור?</b><button class="pill" id="pill"></button></div>
+  <h1>מה יש באזור שלך?</h1>
+  <p class="s">חפש מסעדה, בית כנסת, מסלול טיול ועוד, בכל עיר ויישוב בישראל.</p>
+  <div class="sbox">
+   <form class="search" id="form" role="search" autocomplete="off">
+    <span id="sico"></span>
+    <input id="q" type="search" placeholder="עיר, יישוב או: מסעדה בחיפה" aria-label="חיפוש">
+    <button class="go" type="submit">חפש</button>
+   </form>
+   <div id="sug" hidden></div>
+  </div>
+  <div class="row chips" id="chips" aria-label="ערים נפוצות"></div>
+ </div></header>
+ <div class="catbar"><div class="row" id="cats" role="group" aria-label="קטגוריות"></div></div>
+ <main class="wrap">
+  <div class="tools" id="tools"></div>
+  <div class="sec"><h2 id="title">ערים פופולריות</h2><span id="count"></span></div>
+  <div class="list" id="list"></div>
+  <p class="note">הנתונים מגיעים ממאגר OpenStreetMap הפתוח (© תורמי <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>), והכיסוי משתנה בין אזורים. מידע כשרות מוצג רק היכן שנוסף למאגר ואינו תחליף לתעודת כשרות. <button class="link" id="showGuide">איך משתמשים באפליקציה?</button> <span style="opacity:.6">גרסה 5</span></p>
+ </main>
+</div>
+
+<main class="wrap" id="favs" hidden><div class="top2"><h1>המועדפים שלי</h1></div><div class="list" id="flist" style="margin-top:14px"></div></main>
+<main class="wrap" id="map" hidden><div class="top2"><h1>מפה</h1></div><div id="mapbox"></div></main>
+
+<nav aria-label="ניווט ראשי">
+ <button data-tab="home" aria-current="page" id="n1"></button>
+ <button data-tab="map" id="n2"></button>
+ <button data-tab="favs" id="n3"></button>
+</nav>
+
+<script>
+const IMG={"logo": "data:image/webp;base64,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"};
+document.querySelectorAll('[data-img]').forEach(i=>i.src=IMG[i.dataset.img]);
+document.documentElement.style.setProperty('--logo','url('+IMG.logo+')');
+const fi=document.createElement('link');fi.rel='icon';fi.href=IMG.logo;document.head.appendChild(fi);
+const ICONS={
+food:'<path d="M6 3v8M9 3v8M6 7h3M7.5 11v10M17 3c-2.2 1.800-3 4.500-3 8h3v10"/>',
+coffee:'<path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM16 10h1.500a2.500 2.500 0 0 1 0 5H16M7 3v3M11 3v3"/>',
+synagogue:'<path d="M12 3l7.500 13H4.500zM12 21L4.500 8h15z"/>',
+trail:'<path d="M3 20l6-10 4 6 3-4 5 8z"/>',
+beach:'<path d="M3 16c2 0 2-2 4.500-2S10 16 12 16s2-2 4.500-2S19 16 21 16M3 20c2 0 2-2 4.500-2S10 20 12 20s2-2 4.500-2S19 20 21 20"/><circle cx="16" cy="7" r="3"/>',
+park:'<circle cx="12" cy="9" r="5.500"/><path d="M12 14.500V21M9 21h6"/>',
+kids:'<ellipse cx="12" cy="9" rx="5" ry="6"/><path d="M12 15l-1.500 2h3zM12 17c0 2 2 2 2 4"/>',
+events:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+mikveh:'<path d="M12 3s6 6.500 6 11a6 6 0 0 1-12 0c0-4.500 6-11 6-11z"/>',
+museum:'<path d="M3 9l9-5 9 5M5.500 9v9M9.800 9v9M14.200 9v9M18.500 9v9M3 20.500h18"/>',
+nightlife:'<path d="M5 4h14l-7 8zM12 12v8M8 20h8"/>',
+shopping:'<path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/>',
+hotel:'<path d="M3 19V6M3 14h18v5M21 14v-2.500a2.500 2.500 0 0 0-2.500-2.500H11v5"/>',
+sports:'<circle cx="12" cy="12" r="9"/><path d="M5.500 5.500c3 3 3 10 0 13M18.500 5.500c-3 3-3 10 0 13"/>',
+health:'<path d="M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z"/>',
+fuel:'<path d="M5 20V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15M3 20h13M14 9h2a2 2 0 0 1 2 2v5a1.500 1.500 0 0 0 3 0V9l-3-3M7 8h4"/>',
+pin:'<path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.500"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+heart:'<path d="M12 20s-8-5-8-11a4.500 4.500 0 0 1 8-2.500A4.500 4.500 0 0 1 20 9c0 6-8 11-8 11z"/>',
+compass:'<circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5z"/>',
+map:'<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/>',
+chev:'<path d="M15 6l-6 6 6 6"/>'};
+const ic=(id,s=24)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id]}</svg>`;
+const $=s=>document.querySelector(s);
+$('#sico').innerHTML=ic('search',20);
+$('#n1').innerHTML=ic('compass')+'גילוי';$('#n2').innerHTML=ic('map')+'מפה';$('#n3').innerHTML=ic('heart')+'מועדפים';
+const CITIES=`ירושלים,תל אביב-יפו,חיפה,ראשון לציון,פתח תקווה,אשדוד,נתניה,באר שבע,בני ברק,חולון,רמת גן,אשקלון,רחובות,בת ים,בית שמש,כפר סבא,הרצליה,חדרה,מודיעין-מכבים-רעות,לוד,רעננה,רמלה,נצרת,עכו,נהריה,כרמיאל,טבריה,צפת,אילת,קריית שמונה,עפולה,בית שאן,קריית גת,קריית מוצקין,קריית אתא,קריית ביאליק,יבנה,גבעתיים,הוד השרון,נס ציונה,רמת השרון,אור יהודה,דימונה,נתיבות,שדרות,אופקים,ערד,מעלות-תרשיחא,זכרון יעקב,קיסריה,גדרה,מבשרת ציון,אריאל,מעלה אדומים,קצרין,מצפה רמון,ראש פינה,יקנעם עילית,טבעון,שוהם,אלעד,ביתר עילית,מודיעין עילית,כפר יונה,עומר,רהט,טייבה,אום אל-פחם,שפרעם,סחנין`.split(',');
+const LOC={"ירושלים":[31.7683,35.2137],"תל אביב-יפו":[32.0853,34.7818],"חיפה":[32.794,34.9896],"ראשון לציון":[31.973,34.7925],"פתח תקווה":[32.084,34.8878],"אשדוד":[31.804,34.6553],"נתניה":[32.3215,34.8532],"באר שבע":[31.253,34.7915],"בני ברק":[32.0809,34.8338],"חולון":[32.0158,34.7874],"רמת גן":[32.0684,34.8248],"אשקלון":[31.6688,34.5743],"רחובות":[31.8928,34.8113],"בת ים":[32.0231,34.7503],"בית שמש":[31.747,34.9881],"כפר סבא":[32.175,34.9066],"הרצליה":[32.1663,34.8436],"חדרה":[32.434,34.9196],"מודיעין-מכבים-רעות":[31.8969,35.0104],"לוד":[31.9515,34.8954],"רעננה":[32.184,34.871],"רמלה":[31.9279,34.8625],"נצרת":[32.6996,35.3035],"עכו":[32.9281,35.0818],"נהריה":[33.005,35.094],"כרמיאל":[32.919,35.295],"טבריה":[32.7922,35.5312],"צפת":[32.9646,35.496],"אילת":[29.5577,34.9519],"קריית שמונה":[33.2074,35.5697],"עפולה":[32.6074,35.2893],"בית שאן":[32.499,35.498],"קריית גת":[31.61,34.7642],"קריית מוצקין":[32.837,35.075],"קריית אתא":[32.8113,35.113],"קריית ביאליק":[32.83,35.085],"יבנה":[31.878,34.738],"גבעתיים":[32.07,34.81],"הוד השרון":[32.15,34.889],"נס ציונה":[31.93,34.799],"רמת השרון":[32.146,34.839],"אור יהודה":[32.031,34.855],"דימונה":[31.07,35.033],"נתיבות":[31.42,34.588],"שדרות":[31.525,34.596],"אופקים":[31.314,34.62],"ערד":[31.259,35.213],"מעלות-תרשיחא":[33.016,35.27],"זכרון יעקב":[32.57,34.954],"קיסריה":[32.5,34.9],"גדרה":[31.814,34.778],"מבשרת ציון":[31.796,35.15],"אריאל":[32.106,35.169],"מעלה אדומים":[31.777,35.298],"קצרין":[32.99,35.69],"מצפה רמון":[30.61,34.801],"ראש פינה":[32.969,35.543],"יקנעם עילית":[32.659,35.105],"טבעון":[32.723,35.128],"שוהם":[31.999,34.946],"אלעד":[32.052,34.951],"ביתר עילית":[31.697,35.115],"מודיעין עילית":[31.933,35.043],"כפר יונה":[32.316,34.936],"עומר":[31.265,34.846],"רהט":[31.393,34.754],"טייבה":[32.266,35.01],"אום אל-פחם":[32.52,35.153],"שפרעם":[32.805,35.17],"סחנין":[32.864,35.299]};
+const CATS=[['food','אוכל','מסעדה,מסעדות,אוכל,לאכול,פיצה,שווארמה'],['coffee','קפה','בית קפה,קפה'],['synagogue','בתי כנסת','בית כנסת,בתי כנסת,מניין'],['trail','טיולים','טיול,מסלול,טבע'],['beach','חופים','חוף'],['park','פארקים','פארק,גן ציבורי'],['kids','ילדים','אטרקציות,ילדים'],['events','אירועים','אירועים,הופעות'],['mikveh','מקוואות','מקווה'],['museum','מוזיאונים','מוזיאון'],['nightlife','בילויים','ברים,בר,מועדון'],['shopping','קניות','קניון'],['hotel','לינה','מלון,צימר,לינה'],['sports','ספורט','חדר כושר,בריכה,ספורט'],['health','בריאות','בית מרקחת,מרפאה,בית חולים'],['fuel','דלק','תחנת דלק,דלק']].map(([id,label,kw])=>({id,label,kw:kw.split(',')}));
+const SING={food:'מסעדה',coffee:'בית קפה',synagogue:'בית כנסת',trail:'טבע ותצפית',beach:'חוף',park:'פארק',kids:'ילדים ומשפחות',events:'אירוע',mikveh:'מקווה',museum:'מוזיאון',nightlife:'בילוי',shopping:'קניות',hotel:'לינה',sports:'ספורט',health:'בריאות',fuel:'תחנת דלק'};
+const CUI={pizza:'פיצה',burger:'המבורגר',shawarma:'שווארמה',falafel:'פלאפל',hummus:'חומוס',sushi:'סושי',italian:'איטלקי',asian:'אסייתי',chinese:'סיני',thai:'תאילנדי',middle_eastern:'מזרחי',arab:'ערבי',regional:'מקומי',seafood:'דגים ופירות ים',fish:'דגים',steak_house:'סטייק',grill:'גריל',bakery:'מאפייה',coffee_shop:'קפה',ice_cream:'גלידה',sandwich:'כריכים',vegetarian:'צמחוני',vegan:'טבעוני',mediterranean:'ים תיכוני',french:'צרפתי',mexican:'מקסיקני',kebab:'קבב',salad:'סלטים',breakfast:'ארוחות בוקר',dessert:'קינוחים',chicken:'עוף',international:'בינלאומי',indian:'הודי',japanese:'יפני',georgian:'גאורגי'};
+const DEN={ashkenazi:'אשכנזי',sephardic:'ספרדי',sephardi:'ספרדי',chabad:'חב״ד',chabad_lubavitch:'חב״ד',orthodox:'אורתודוקסי',reform:'רפורמי',conservative:'קונסרבטיבי',mizrahi:'עדות המזרח'};
+const KOS={yes:'כשר',dairy:'כשר חלבי',meat:'כשר בשרי',no:'לא כשר'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cat_=id=>CATS.find(c=>c.id===id);
+const POP=['תל אביב-יפו','ירושלים','חיפה','פתח תקווה','באר שבע','נתניה','אילת','טבריה','צפת','עכו','אשדוד','רעננה'];
+let place=null,cat=null,rad=5,kf='all',res=[],favs={},cache={},seq=0,shown=40;
+try{favs=JSON.parse(localStorage.getItem('favs4')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('favs4',JSON.stringify(favs))}catch(e){}};
+const km=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const dist=d=>d<1?Math.max(50,Math.round(d*20)*50)+' מ׳':d.toFixed(1)+' ק״מ';
+const wt=(p,ms)=>Promise.race([p,new Promise((_,j)=>setTimeout(()=>j(new Error('הבקשה ארכה יותר מדי')),ms))]);
+const empty=(t,s,b)=>`<div class="empty"><b>${t}</b>${s}${b||''}</div>`;
+const status=m=>{$('#list').innerHTML='<div class="st"><i class="sp"></i>'+m+'</div>'+'<div class="sk"></div>'.repeat(4)};
+const Q={food:'nwr["amenity"~"^(restaurant|fast_food|food_court|ice_cream)$"]',coffee:'nwr["amenity"="cafe"]',synagogue:'nwr["amenity"="place_of_worship"]["religion"="jewish"];nwr["building"="synagogue"]',mikveh:'nwr["bath:type"="mikveh"]',trail:'nwr["leisure"="nature_reserve"];nwr["boundary"="national_park"];nwr["natural"="spring"];nwr["tourism"="viewpoint"]',beach:'nwr["natural"="beach"]',park:'nwr["leisure"="park"]',kids:'nwr["leisure"="playground"];nwr["tourism"~"^(theme_park|zoo)$"]',museum:'nwr["tourism"="museum"]',nightlife:'nwr["amenity"~"^(bar|pub|nightclub)$"]',shopping:'nwr["shop"="mall"]',hotel:'nwr["tourism"~"^(hotel|guest_house|hostel|apartment)$"]',sports:'nwr["leisure"~"^(sports_centre|fitness_centre|swimming_pool)$"]',health:'nwr["amenity"~"^(pharmacy|clinic|hospital)$"]',fuel:'nwr["amenity"="fuel"]'};
+const EPS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+const fetchT=(u,o,ms)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);return fetch(u,{...o,signal:c.signal}).finally(()=>clearTimeout(t))};
+const buildQ=(c,la,lo,r)=>'[out:json][timeout:25];('+Q[c].split(';').map(x=>x+'(around:'+r*1000+','+la+','+lo+');').join('')+');out center tags 400;';
+const direct=q=>Promise.any(EPS.map(u=>fetchT(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}},24000).then(async r=>{if(!r.ok)throw new Error(new URL(u).host+' '+r.status);const j=await r.json();if(!j.elements)throw new Error(new URL(u).host+' bad');return j.elements})));
+async function api(params){
+ const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),26000);
+ try{const r=await fetch('/.netlify/functions/api?'+new URLSearchParams(params),{signal:ctl.signal});
+  const j=await r.json().catch(()=>null);
+  if(!r.ok){const e=new Error((j&&j.error)||('HTTP '+r.status));e.status=r.status;throw e}
+  return j}finally{clearTimeout(t)}
+}
+async function geocode(q){
+ for(const t of [q,q.replace(/^ב-?/,'')]){
+  if(!t)continue;
+  if(LOC[t])return{name:t,lat:LOC[t][0],lon:LOC[t][1]};
+  try{const j=await api({type:'geocode',q:t});if(j.lat)return{name:t,lat:j.lat,lon:j.lon}}catch(e){
+   try{const r=await fetchT('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=il&accept-language=he&q='+encodeURIComponent(t),{},9000);const j=await r.json();if(j[0])return{name:t,lat:+j[0].lat,lon:+j[0].lon}}catch(e2){}}
+ }return null;
+}
+function normalize(els){
+ const seen=new Set();
+ return els.map(e=>{const t=e.tags||{},la=e.lat??(e.center&&e.center.lat),lo=e.lon??(e.center&&e.center.lon);
+  if(la==null)return null;
+  let name=t['name:he']||t.name||t['name:ar']||t['name:en']||t.brand||t.operator;
+  const street=t['addr:street']?t['addr:street']+(t['addr:housenumber']?' '+t['addr:housenumber']:''):'';
+  if(!name){if(cat==='synagogue')name='בית כנסת'+(t['addr:street']?' ברחוב '+t['addr:street']:'');else return null}
+  const id=e.type[0]+e.id;if(seen.has(id))return null;seen.add(id);
+  const cu=(t.cuisine||'').split(';').map(x=>CUI[x.trim()]).filter(Boolean).slice(0,2).join(', ');
+  const dn=DEN[(t.denomination||'').toLowerCase()]||'';
+  return{id,name,cat,lat:la,lon:lo,d:km(place.lat,place.lon,la,lo),kosher:t['diet:kosher']||null,addr:[street,t['addr:city']].filter(Boolean).join(', '),
+   sub:cu||dn||SING[cat],phone:t.phone||t['contact:phone']||'',web:/^https?:\/\//.test(t.website||t['contact:website']||'')?(t.website||t['contact:website']):''}}).filter(Boolean).sort((a,b)=>a.d-b.d);
+}
+async function load(){
+ const my=++seq;
+ if(!place||!cat)return paint();
+ if(cat==='events'){res=[];paint(true);$('#list').innerHTML=empty('אירועים עדיין לא זמינים','אין לנו עדיין מקור נתונים אמין לאירועים. נוסיף אותו בשלב הבא.');$('#count').textContent='';return}
+ const k=[cat,place.lat.toFixed(3),place.lon.toFixed(3),rad].join('|');
+ shown=40;
+ if(cache[k]){res=cache[k];return paint()}
+ paint(true);status('טוען מקומות…');
+ try{
+  let els;
+  try{els=(await wt(api({type:'places',lat:place.lat,lon:place.lon,cat,r:rad}),28000)).elements}
+  catch(e){try{els=await wt(direct(buildQ(cat,place.lat,place.lon,rad)),32000)}catch(e2){e.message=(e.message||'')+' | '+(e2.errors?e2.errors.map(x=>x&&x.message||'blocked').join(', '):e2.message);throw e}}
+  if(my!==seq)return;
+  cache[k]=normalize(els);res=cache[k];paint();
+ }catch(e){
+  if(my!==seq)return;
+  $('#list').innerHTML=empty('לא הצלחנו לטעון נתונים','שרת המפות לא הגיב. נסה שוב בעוד רגע.<br><small>'+esc(e.message||'')+'</small>','<button id="retry">נסה שוב</button>');$('#count').textContent='';
+ }
+}
+function card(p){
+ const on=!!favs[p.id],ks=p.kosher&&KOS[p.kosher],isF=p.cat==='food'||p.cat==='coffee';
+ const k=isF?(ks?`<span class="kb ${p.kosher==='no'?'no':''}">${ks}</span>`:'<span class="kb u">כשרות לא ידועה</span>'):'';
+ return `<article class="card"><div class="mono">${ic(p.cat,22)}</div>
+ <div><b>${esc(p.name)}</b><div class="meta">${esc(p.sub)}${p.d!=null?' · '+dist(p.d):''}</div>${p.addr?`<div class="addr">${esc(p.addr)}</div>`:''}${k}
+ <div class="acts"><a class="p" href="https://waze.com/ul?ll=${p.lat},${p.lon}&navigate=yes" target="_blank" rel="noopener">Waze</a><a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}" target="_blank" rel="noopener">Google Maps</a>${p.phone?`<a href="tel:${esc(p.phone)}">התקשר</a>`:''}${p.web?`<a href="${esc(p.web)}" target="_blank" rel="noopener">אתר</a>`:''}</div></div>
+ <button class="fav" data-id="${p.id}" aria-pressed="${on}" aria-label="${on?'הסר מהמועדפים':'שמור במועדפים'}">${ic('heart',22)}</button></article>`;
+}
+function paint(skipList){
+ $('#pill').innerHTML=ic('pin',16)+'<span>'+(place?esc(place.name):'המיקום שלי')+'</span>';
+ document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',!!place&&x.textContent===place.name));
+ document.querySelectorAll('.cb').forEach(x=>x.setAttribute('aria-pressed',x.dataset.c===cat));
+ const food=cat==='food'||cat==='coffee';
+ $('#tools').innerHTML=place?`<div class="seg" role="group" aria-label="רדיוס">${[2,5,10,20].map(r=>`<button data-r="${r}" class="${r===rad?'on':''}">${r} ק״מ</button>`).join('')}</div>`+(food?`<div class="seg" role="group" aria-label="כשרות">${[['all','הכל'],['yes','כשר'],['dairy','חלבי'],['meat','בשרי']].map(([v,l])=>`<button data-k="${v}" class="${v===kf?'on':''}">${l}</button>`).join('')}</div>`:''):'';
+ $('#title').textContent=place&&cat?cat_(cat).label+' ב'+(place.name==='המיקום שלי'?'סביבתך':place.name):(place?'בחר קטגוריה':'ערים פופולריות');
+ if(skipList)return;
+ if(!place){$('#list').innerHTML=POP.map(c=>`<button class="cc" data-city="${c}"><span>${c}</span>${ic('chev',18)}</button>`).join('');$('#count').textContent='';return}
+ if(!cat){$('#list').innerHTML=empty('מה מחפשים?','בחר קטגוריה מהסרגל למעלה.');$('#count').textContent='';return}
+ const v=res.filter(p=>!food||kf==='all'||(kf==='yes'?['yes','dairy','meat'].includes(p.kosher):p.kosher===kf));
+ const tagged=res.filter(p=>p.kosher).length;
+ $('#count').textContent=v.length+' תוצאות'+(food&&kf==='all'&&res.length?' · כשרות מסומנת ב-'+tagged:'');
+ $('#list').innerHTML=v.length?v.slice(0,shown).map(card).join('')+(v.length>shown?'<button class="more">הצג עוד</button>':''):empty('לא נמצאו תוצאות','נסה להגדיל את הרדיוס או לבחור קטגוריה אחרת.'+(food&&kf!=='all'?' מידע כשרות קיים רק בחלק מהמקומות.':''));
+}
+function setPlace(p){place=p;if(!cat)cat='food';load()}
+async function go(text){
+ const my=++seq;text=text.trim();let k=null,rest=text;
+ CATS.flatMap(c=>c.kw.map(w=>[w,c.id])).sort((a,b)=>b[0].length-a[0].length).forEach(([w,id])=>{if(!k&&rest.includes(w)){k=id;rest=rest.replace(w,' ')}});
+ rest=rest.replace(/\s+/g,' ').trim();
+ if(k)cat=k;
+ if(!rest){if(place)load();else paint();return}
+ paint(true);status('מאתר את היישוב…');
+ try{
+  const c=CITIES.slice().sort((a,b)=>b.length-a.length).find(n=>rest.includes(n));
+  const g=await geocode(c||rest);
+  if(my!==seq)return;
+  if(!g){paint(true);$('#list').innerHTML=empty('לא מצאנו את היישוב','בדוק את האיות או נסה שם אחר.');return}
+  setPlace(g);
+ }catch(e){if(my===seq)$('#list').innerHTML=empty('משהו השתבש','נסה שוב.')}
+}
+$('#chips').innerHTML=POP.map(c=>`<button class="chip">${c}</button>`).join('');
+$('#chips').onclick=e=>{const b=e.target.closest('.chip');if(b)go(b.textContent)};
+$('#cats').innerHTML=CATS.map(c=>`<button class="cb" data-c="${c.id}" aria-pressed="false">${ic(c.id,24)}${c.label}</button>`).join('');
+$('#cats').onclick=e=>{const b=e.target.closest('.cb');if(!b)return;cat=b.dataset.c;kf='all';place?load():paint()};
+$('#tools').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.r){rad=+b.dataset.r;load()}else{kf=b.dataset.k;shown=40;paint()}};
+$('#list').onclick=e=>{
+ if(e.target.id==='retry')return load();
+ if(e.target.closest('.more')){shown+=40;return paint()}
+ const b=e.target.closest('.cc');if(b)go(b.dataset.city);
+};
+$('#q').addEventListener('input',()=>{
+ const w=$('#q').value.trim().split(' ').pop(),m=w.length>1?CITIES.filter(n=>n.includes(w)).slice(0,5):[];
+ $('#sug').innerHTML=m.map(n=>`<button type="button" data-c="${n}">${ic('pin',16)}${n}</button>`).join('');$('#sug').hidden=!m.length;
+});
+$('#sug').onclick=e=>{const b=e.target.closest('button');if(b){$('#q').value='';$('#sug').hidden=true;go(b.dataset.c)}};
+$('#form').onsubmit=e=>{e.preventDefault();$('#sug').hidden=true;go($('#q').value);$('#q').blur()};
+$('#pill').onclick=()=>{
+ if(!navigator.geolocation){$('#q').focus();return}
+ status('מאתר את המיקום שלך…');
+ navigator.geolocation.getCurrentPosition(p=>setPlace({name:'המיקום שלי',lat:p.coords.latitude,lon:p.coords.longitude}),()=>{paint();$('#list').innerHTML=empty('אין גישה למיקום','אפשר גישה למיקום בדפדפן, או כתוב שם של עיר.')},{timeout:10000});
+};
+document.addEventListener('click',e=>{const b=e.target.closest('.fav');if(!b)return;const id=b.dataset.id,p=res.find(x=>x.id===id)||favs[id];
+ if(favs[id])delete favs[id];else favs[id]=p;save();
+ b.setAttribute('aria-pressed',!!favs[id]);if(!$('#favs').hidden)drawFavs()});
+function drawFavs(){const f=Object.values(favs);$('#flist').innerHTML=f.length?f.map(card).join(''):empty('עדיין אין מועדפים','לחץ על הלב ליד מקום כדי לשמור אותו כאן.')}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.removeAttribute('aria-current'));b.setAttribute('aria-current','page');
+ const t=b.dataset.tab;$('#home').hidden=t!=='home';$('#favs').hidden=t!=='favs';$('#map').hidden=t!=='map';scrollTo(0,0);
+ if(t==='favs')drawFavs();
+ if(t==='map'){const la=place?place.lat:31.5,lo=place?place.lon:34.9,d=place?.04:1.2;
+  $('#mapbox').innerHTML=`<iframe title="מפה" src="https://www.openstreetmap.org/export/embed.html?bbox=${lo-d},${la-d},${lo+d},${la+d}&layer=mapnik${place?`&marker=${la},${lo}`:''}"></iframe>`}
+});
+const GS=[
+ {t:'בחר עיר או יישוב',d:'כתוב שם של כל יישוב בישראל, או בחר מהרשימה. אפשר גם לכתוב ישר: מסעדה בחיפה.',m:()=>`<div class="search"><span>${ic('search',20)}</span><input value="מסעדה בחיפה" readonly style="padding:10px 12px"><span class="go">חפש</span></div><div class="row"><span class="chip on">חיפה</span><span class="chip">ירושלים</span><span class="chip">תל אביב-יפו</span></div>`},
+ {t:'בחר מה מחפשים',d:'מסעדות, בתי כנסת, טיולים, חופים ועוד. אפשר לשנות רדיוס ולסנן לפי כשרות.',m:()=>`<div class="row" style="gap:4px">${['food','synagogue','trail','beach','park'].map((c,i)=>`<span class="cb" aria-pressed="${i===0}">${ic(c,26)}${cat_(c).label}</span>`).join('')}</div><div class="seg" style="align-self:center"><button>2 ק״מ</button><button class="on">5 ק״מ</button><button>10 ק״מ</button></div>`},
+ {t:'נווט ושמור',d:'לחץ על Waze או Google Maps כדי להגיע, ועל הלב כדי לשמור מקום במועדפים.',m:()=>`<article class="card" style="box-shadow:none"><div class="mono">${ic('food',22)}</div><div><b>מסעדה לדוגמה</b><div class="meta">מזרחי · 400 מ׳</div><span class="kb">כשר</span><div class="acts"><a class="p">Waze</a><a>Google Maps</a></div></div><span class="fav" style="color:var(--sun)">${ic('heart',22)}</span></article><p style="text-align:center;font-size:.76rem;color:var(--mute)">דוגמה להמחשה בלבד</p>`}];
+let gi=0;
+function gdraw(){const g=GS[gi];$('#gmock').innerHTML=g.m();$('#gt').textContent=g.t;$('#gd').textContent=g.d;
+ $('#gdots').innerHTML=GS.map((_,i)=>`<i class="${i===gi?'on':''}"></i>`).join('');$('#gnext').textContent=gi===GS.length-1?'מתחילים':'הבא'}
+function openGuide(){gi=0;gdraw();$('#guide').hidden=false}
+function closeGuide(){$('#guide').hidden=true;try{localStorage.setItem('g5','1')}catch(e){}scrollTo(0,0)}
+$('#gnext').onclick=()=>{if(gi<GS.length-1){gi++;gdraw()}else closeGuide()};
+$('#gskip').onclick=closeGuide;
+$('#showGuide').onclick=openGuide;
+$('#start').onclick=()=>{$('#splash').hidden=true;try{sessionStorage.setItem('s','1')}catch(e){}let seen=false;try{seen=!!localStorage.getItem('g5')}catch(e){}if(!seen)openGuide()};
+try{if(sessionStorage.getItem('s')){$('#splash').hidden=true;let seen=false;try{seen=!!localStorage.getItem('g5')}catch(e){}if(!seen)openGuide()}}catch(e){}
+paint();
+</script>
+</body>
+</html>
