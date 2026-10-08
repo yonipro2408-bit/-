@@ -5,9 +5,9 @@ const EPS = [
   'https://overpass.private.coffee/api/interpreter',
 ];
 const Q = {
-  food: 'nwr["amenity"~"^(restaurant|fast_food)$"]',
+  food: 'nwr["amenity"~"^(restaurant|fast_food|food_court|ice_cream)$"]',
   coffee: 'nwr["amenity"="cafe"]',
-  synagogue: 'nwr["amenity"="place_of_worship"]["religion"="jewish"]',
+  synagogue: 'nwr["amenity"="place_of_worship"]["religion"="jewish"];nwr["building"="synagogue"]',
   mikveh: 'nwr["bath:type"="mikveh"]',
   trail: 'nwr["leisure"="nature_reserve"];nwr["boundary"="national_park"];nwr["natural"="spring"];nwr["tourism"="viewpoint"]',
   beach: 'nwr["natural"="beach"]',
@@ -42,9 +42,9 @@ exports.handler = async (event) => {
       if (!j[0]) return out(404, { error: 'not found' });
       return out(200, { lat: +j[0].lat, lon: +j[0].lon }, { 'Cache-Control': 'public, max-age=86400' });
     }
-    const lat = +p.lat, lon = +p.lon, r = Math.min(Math.max(+p.r || 3, 1), 15), cat = p.cat;
+    const lat = +p.lat, lon = +p.lon, r = Math.min(Math.max(+p.r || 5, 1), 25), cat = p.cat;
     if (!(lat > 29 && lat < 34 && lon > 34 && lon < 36.5) || !Q[cat]) return out(400, { error: 'bad params' });
-    const query = '[out:json][timeout:9];(' + Q[cat].split(';').map(s => `${s}(around:${r * 1000},${lat},${lon});`).join('') + ');out center tags 120;';
+    const query = '[out:json][timeout:9];(' + Q[cat].split(';').map(s => `${s}(around:${r * 1000},${lat},${lon});`).join('') + ');out center tags 400;';
     const body = 'data=' + encodeURIComponent(query);
     const elements = await Promise.any(EPS.map(async (u) => {
       const res = await fetch(u, {
